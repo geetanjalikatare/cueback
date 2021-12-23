@@ -5,35 +5,35 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("kiran.pyati@infobeans.com");
+  const [password, setPassword] = useState("puneserver.123");
+
   const obj = {
-    emailId: "kiran.pyati@infobeans.com",
-    password: "Login@123#@!",
+    emailId: email,
+    password: password,
   };
-  const headers={
-    "Content-Type":"application/json"
-  }
+  const headers = {
+    "Content-Type": "application/json",
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("called")
+
     axios
-      .post("https://infobeans.cueback.com/api/alumni/login",{headers:headers},obj)
-      .then((res) => {
-        console.log("res",res);
+      .post("https://public.cuebackqa.com/api/alumni/login", obj, {
+        headers: headers,
       })
-      .catch((err) => {
-        console.log(err);
+      .then((res) => {
+        localStorage.setItem("token", res.data.Response.UserAuthToken);
       });
   };
   return (
     <Box
-      style={{
+      style={{ 
         border: "1px solid black",
         padding: "10px",
         width: "400px",
         height: "400px",
-        marginLeft: "400px",
+        marginLeft: "30%",
         marginTop: "120px",
         textAlign: "center",
       }}

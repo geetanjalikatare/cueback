@@ -10,17 +10,13 @@ import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import EditIcon from "@mui/icons-material/Edit";
-import SystemUpdateAltIcon from "@mui/icons-material/SystemUpdateAlt";
-import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DateRangeIcon from "@mui/icons-material/DateRange";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import SendIcon from '@mui/icons-material/Send';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import SendIcon from "@mui/icons-material/Send";
+import Prompts from "./Prompts";
 
-const Card = () => {
+const Card = ({ data }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -29,8 +25,32 @@ const Card = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  //console.log(data);
+
+  const date_fun = (str) =>{
+    const obj={
+      date:"",
+      month:"",
+      year:""
+    }
+    const date = new Date(str*1000);
+    const c=date.toLocaleDateString("en-US"); //   12/6/21 month date year
+    const a=c.split("/");
+    var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];    
+    obj.month=months[a[0]-1] ;
+    obj.date=a[1];
+    obj.year=a[2]
+    return obj;     
+  }
   return (
-    <Box style={{ backgroundColor: "#f4f1e9", paddingBottom: "10px",paddingTop:"30px" }}>
+    <Box
+      style={{
+        backgroundColor: "#e6f3f4",
+        paddingBottom: "10px",
+        paddingTop: "30px",
+      }}
+    >
       <Paper
         style={{
           width: "700px",
@@ -52,12 +72,13 @@ const Card = () => {
           </Grid>
           <Grid item xs={8}>
             <Typography>
-              By <a href="#">You</a> on 14 Dec
+              By <a href="#">{data.user_details.field_first_name_value}{" "}{data.user_details.field_last_name_value}</a>  
+              {" "}on {date_fun(data.updated).date}{" "}{date_fun(data.updated).month}
             </Typography>
             <Button
               variant="contained"
               style={{
-                backgroundColor: "#2177b1",
+                backgroundColor: "RGB(189, 103, 103)",
                 borderRadius: "15px",
                 height: "25px",
               }}
@@ -72,7 +93,7 @@ const Card = () => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
-              style={{border:"1px solid #166e60",color:"#166e60"}}
+              style={{ border: "1px solid #166e60", color: "#166e60" }}
             >
               Action
             </Button>
@@ -86,85 +107,74 @@ const Card = () => {
               }}
               style={{ border: "1px solid green" }}
             >
-              <MenuItem
-                onClick={handleClose}
-                style={{ border: "1px solid green" }}
-              >
-                {" "}
-                <EditIcon /> Edit Memory
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                style={{ border: "1px solid green" }}
-              >
-                {" "}
-                <SystemUpdateAltIcon />
-                Move to Drafts
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                style={{ border: "1px solid green" }}
-              >
-                {" "}
-                <AddToPhotosIcon />
-                Add to Collection
-              </MenuItem>
-              <MenuItem
-                onClick={handleClose}
-                style={{ border: "1px solid green" }}
-              >
-                {" "}
-                <DeleteIcon style={{ color: "red" }} />
-                Delete
-              </MenuItem>
+              {Object.keys(data.actions_on_memory).map((i) => {
+                return (
+                  <MenuItem onClick={handleClose}>
+                    {data.actions_on_memory[i]}
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Grid>
         </Grid>
         <Typography
           style={{
-            color: "RGB(23, 110, 101)",
+            color: "#3279a0",
             fontWeight: "bold",
             textDecoration: "underline",
           }}
           variant="h5"
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit unde
-          exercitationem reprehenderit. o officiis mollitia neque hic facere.
+          {data.title}
         </Typography>
         <Typography style={{ borderBottom: "1px dotted grey" }}>
           <DateRangeIcon />
-          Feb 2020
+          {date_fun(data.updated).month} {" "}{ date_fun(data.updated).year}
         </Typography>
+
+
         <div style={{ paddingTop: "20px", borderBottom: "1px dotted grey" }}>
           <Typography style={{ paddingBottom: "20px" }}>
-            Lorem ipsum dolor sit amet.
+            {data.mins_to_read !=="" &&(<i>{"<"}{" "}{data.mins_to_read}</i>)}
+            <div
+              dangerouslySetInnerHTML={{ __html: data?.description }}
+              style={{ maxHeight: "117px", overflow: "hidden" }}
+            />
           </Typography>
-          <img
-            width="350px"
-            height="300px"
-            alt="new"
-            src="https://cuebackmedia.storage.googleapis.com/infobeans_new/mystory/thumbs/thumb-%40700-8582.jpeg?GoogleAccessId=298180869348-compute@developer.gserviceaccount.com&Expires=1639734344&Signature=g48tOOlsXywE517YuwadbieKcGVLeeh9YT8tVxlmcK%2BIEeqttdBDpgiatANAUZ3JxNliTfIat4jc%2BEiboHXZrHUcjmKnjk12foI7gGC%2B0ugUX6j55Dv496CScrvYRgRo%2B2L6rWVySV%2FTa60OnWywpNGisSAo7BIhygTuhz52W3T38DzRHd6hI64KpR1tnZu0BDK6SuprXbMKjrHAg4IxGgOI%2Ff5N%2FlfhhEKcoic40C1AvMG6V9ltO2Wm2nMDYeAfh3mW%2BTw7OYDTMVU%2FbpyNXO8jyo5%2B0GlOFtmE2KWOhyOEsKnsCq8f1OQLkqDjpMu85cur6cUcV9qXd2baZzlKeQ%3D%3D"
-          ></img>
-          <img
-            width="250px"
-            height="300px"
-            alt="new"
-            src="https://cuebackmedia.storage.googleapis.com/infobeans_new/mystory/8583.JPG?GoogleAccessId=298180869348-compute@developer.gserviceaccount.com&Expires=1639734032&Signature=OeeWrISvSPzQLkr9r%2Bgi3WDb%2FltP8IkD%2FkCjWINv8JAHejgy5Agg%2FSIT4v2ddlcmuxt63qtQ5n%2F3%2FYHJ3pB%2FMMpgNi40Kdyki9RA9XiB5vpoVRlcqsQ0tCGEb%2BwDTsPnItoq%2FlA1TkPUg1qwFJK0227h%2B97P3SnIJVPw6xyr9P3bItslPFCiVl8mnR37d%2B9mMgxRFAoAsH0NqKZfTXugD90hHXcYxuO0gQ8optwQYgo1sOcstWum%2BJBiDFRBBmYvCsnli2RY10z8S64O9IuuabbCWyt6gsRCP1zMNbqm7I%2Fs%2F%2BeSVV%2FyRcgkwbcyduDXJrSjJcmFNc9jUYzibLEhJA%3D%3D"
-          ></img>
+          
         </div>
         <Grid container style={{ borderBottom: "1px dotted grey" }}>
           <Grid item xs={6}>
             <Typography>
-              0 view <a href="#">Likes</a> Comments
+              {data.is_comment_allowed ? "Comments" : " "}
             </Typography>
           </Grid>
-          <Grid item xs={6}  style={{paddingTop:"8px",paddingBottom:"8px"}}>
-            <Button style={{border:" 1px solid #166e60",color:"#166e60",marginLeft:"25px"}}> <FavoriteBorderIcon /> Like</Button>
-            <Button style={{border:" 1px solid #166e60",color:"#166e60",marginLeft:"15px"}}> <ShareIcon/>Share</Button>
-            <Button style={{border:" 1px solid #166e60",color:"#166e60",marginLeft:"10px"}}> <ContentCopyIcon/>Copy Link</Button>
+          <Grid item xs={6} style={{ paddingTop: "8px", paddingBottom: "8px" }}>
+            <Button
+              style={{
+                border: " 1px solid #166e60",
+                color: "#166e60",
+                marginLeft: "25px",
+              }}
+            >
+              {" "}
+              <FavoriteBorderIcon /> Like
+            </Button>
+
+            <Button
+              style={{
+                border: " 1px solid #166e60",
+                color: "#166e60",
+                marginLeft: "10px",
+              }}
+            >
+              {" "}
+              <ContentCopyIcon />
+              Copy Link
+            </Button>
           </Grid>
         </Grid>
-        <Grid container style={{ paddingTop: "20px" }}>
+        {data.is_comment_allowed ? (<Grid container style={{ paddingTop: "20px" }}>
           <Grid item xs={1}>
             <Avatar
               style={{ width: "40px", height: "40px" }}
@@ -172,14 +182,28 @@ const Card = () => {
               src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
             />
           </Grid>
-          <Grid item xs={11}>
-            <TextareaAutosize
-              min={4}
-              style={{ width: "620px", height: "100px", borderRadius: "8px" }}
-            />
-            <Button style={{ float: "right" ,backgroundColor:"#166e60"}} variant="contained" > <SendIcon/> Post</Button>
-          </Grid>
-        </Grid>
+          
+            <Grid item xs={11}>
+              <TextareaAutosize
+                min={4}
+                style={{ width: "620px", height: "100px", borderRadius: "8px" }}
+              />
+              <Button
+                style={{
+                  float: "right",
+                  backgroundColor: "RGB(238, 150, 163)",
+                }}
+                variant="contained"
+              >
+                {" "}
+                <SendIcon /> Post
+              </Button>
+            </Grid>
+         
+        </Grid> ) : null}
+       {data.prompts &&(<Box>
+          <Prompts data={data.prompts.random_prompt_data}/>
+        </Box>)} 
       </Paper>
     </Box>
   );

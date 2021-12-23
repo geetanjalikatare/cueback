@@ -1,12 +1,12 @@
-import Login from "./components/Login";
-import Card from "./components/Card";
 import Main from "./components/Main";
+import Login from "./components/Login";
+import Prompts from "./components/Prompts";
 function App() {
   return (
     <div className="App">
-    <Login/>
+      {localStorage.getItem("token")?<Main />:<Login/>}
+      
     </div>
   );
 }
-
 export default App;
