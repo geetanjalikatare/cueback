@@ -13,8 +13,11 @@ import MenuItem from "@mui/material/MenuItem";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import AttachmentIcon from "@mui/icons-material/Attachment";
 import SendIcon from "@mui/icons-material/Send";
 import Prompts from "./Prompts";
+import { dateConverter } from "./utility/functions";
+import ImageList from "./ImageList";
 
 const Card = ({ data }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,24 +28,8 @@ const Card = ({ data }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  //console.log(data);
+ // console.log(data);
 
-  const date_fun = (str) =>{
-    const obj={
-      date:"",
-      month:"",
-      year:""
-    }
-    const date = new Date(str*1000);
-    const c=date.toLocaleDateString("en-US"); //   12/6/21 month date year
-    const a=c.split("/");
-    var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];    
-    obj.month=months[a[0]-1] ;
-    obj.date=a[1];
-    obj.year=a[2]
-    return obj;     
-  }
   return (
     <Box
       style={{
@@ -72,8 +59,13 @@ const Card = ({ data }) => {
           </Grid>
           <Grid item xs={8}>
             <Typography>
-              By <a href="#">{data.user_details.field_first_name_value}{" "}{data.user_details.field_last_name_value}</a>  
-              {" "}on {date_fun(data.updated).date}{" "}{date_fun(data.updated).month}
+              By{" "}
+              <a href="#">
+                {data.user_details.field_first_name_value}{" "}
+                {data.user_details.field_last_name_value}
+              </a>{" "}
+              on {dateConverter(data.updated).date}{" "}
+              {dateConverter(data.updated).month}
             </Typography>
             <Button
               variant="contained"
@@ -129,25 +121,40 @@ const Card = ({ data }) => {
         </Typography>
         <Typography style={{ borderBottom: "1px dotted grey" }}>
           <DateRangeIcon />
-          {date_fun(data.updated).month} {" "}{ date_fun(data.updated).year}
+          {dateConverter(data.updated).month} {dateConverter(data.updated).year}
         </Typography>
-
 
         <div style={{ paddingTop: "20px", borderBottom: "1px dotted grey" }}>
           <Typography style={{ paddingBottom: "20px" }}>
-            {data.mins_to_read !=="" &&(<i>{"<"}{" "}{data.mins_to_read}</i>)}
+            {data.mins_to_read !== "" && (
+              <i>
+                {"<"} {data.mins_to_read}
+              </i>
+            )}
             <div
               dangerouslySetInnerHTML={{ __html: data?.description }}
               style={{ maxHeight: "117px", overflow: "hidden" }}
             />
+            {data.images &&<Box style={{marginTop:"10px"}}>
+              <ImageList data={data.images}/>
+            </Box>}
           </Typography>
-          
         </div>
         <Grid container style={{ borderBottom: "1px dotted grey" }}>
           <Grid item xs={6}>
             <Typography>
               {data.is_comment_allowed ? "Comments" : " "}
             </Typography>
+            {data.attachment_count > 0 && (
+              <Typography style={{ color: "#36779a" }}>
+                <a href="#">
+                  <AttachmentIcon
+                    style={{ transform: "rotate(150deg)", width: "25px" }}
+                  />
+                  {data.attachment_count}
+                </a>
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={6} style={{ paddingTop: "8px", paddingBottom: "8px" }}>
             <Button
@@ -174,15 +181,16 @@ const Card = ({ data }) => {
             </Button>
           </Grid>
         </Grid>
-        {data.is_comment_allowed ? (<Grid container style={{ paddingTop: "20px" }}>
-          <Grid item xs={1}>
-            <Avatar
-              style={{ width: "40px", height: "40px" }}
-              alt="Remy Sharp"
-              src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-            />
-          </Grid>
-          
+        {data.is_comment_allowed ? (
+          <Grid container style={{ paddingTop: "20px" }}>
+            <Grid item xs={1}>
+              <Avatar
+                style={{ width: "40px", height: "40px" }}
+                alt="Remy Sharp"
+                src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+              />
+            </Grid>
+
             <Grid item xs={11}>
               <TextareaAutosize
                 min={4}
@@ -199,11 +207,13 @@ const Card = ({ data }) => {
                 <SendIcon /> Post
               </Button>
             </Grid>
-         
-        </Grid> ) : null}
-       {data.prompts &&(<Box>
-          <Prompts data={data.prompts.random_prompt_data}/>
-        </Box>)} 
+          </Grid>
+        ) : null}
+        {data.prompts && (
+          <Box style={{ paddingTop: "20px" }}>
+            <Prompts data={data.prompts.random_prompt_data} />
+          </Box>
+        )}
       </Paper>
     </Box>
   );

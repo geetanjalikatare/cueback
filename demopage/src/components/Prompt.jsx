@@ -20,10 +20,9 @@ const Prompt = ({value}) =>{
                     backgroundColor:"white"
                 }
               }}
-            
             >
               <h5 style={{ color: hover?"black":"white" ,paddingBottom:"35px"}}>
-                {value}
+                {value.title}
               </h5>
               <Button
               onMouseEnter={()=>setHover(true)}

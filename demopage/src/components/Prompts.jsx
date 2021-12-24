@@ -2,9 +2,10 @@ import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import Prompt from "./Prompt";
 
-const Prompts = ({ data }) => {
-  console.log(Object.keys(data));
+const Prompts = ({data}) => {
+   
 
+ var count=0;
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -21,10 +22,12 @@ const Prompts = ({ data }) => {
       }}
     >
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          rtujtjuty
-        </div>
-        <div class="carousel-item ">dhgdhb</div>
+        {Object.keys(data).map((i)=>{
+          count++;
+          return ( <div class={count===1?"carousel-item active":"carousel-item "}>
+          <Prompt value={data[i]}/>
+         </div>)
+        })}
       </div>
       <button
         class="carousel-control-prev"
