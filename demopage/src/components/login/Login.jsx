@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import axios from "axios";
+import { LoginApi } from "../api/api";
 
 const Login = () => {
   const [email, setEmail] = useState("kiran.pyati@infobeans.com");
@@ -12,19 +12,10 @@ const Login = () => {
     emailId: email,
     password: password,
   };
-  const headers = {
-    "Content-Type": "application/json",
-  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    axios
-      .post("https://public.cuebackqa.com/api/alumni/login", obj, {
-        headers: headers,
-      })
-      .then((res) => {
-        localStorage.setItem("token", res.data.Response.UserAuthToken);
-      });
+    LoginApi(obj);
   };
   return (
     <Box

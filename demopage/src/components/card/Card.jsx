@@ -15,9 +15,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import SendIcon from "@mui/icons-material/Send";
-import Prompts from "./Prompts";
-import { dateConverter } from "./utility/functions";
-import ImageList from "./ImageList";
+import Prompts from "../prompt/Prompts";
+import { dateConverter } from "../util/functions";
+import ImageList from "../image/ImageList";
+import Comments from "../comments/Comments";
+import Collection from "../collection/Collection";
+import Collabrator from "../collaborator/Collabrator";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const Card = ({ data }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,7 +32,7 @@ const Card = ({ data }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
- // console.log(data);
+  // console.log(data);
 
   return (
     <Box
@@ -70,12 +74,14 @@ const Card = ({ data }) => {
             <Button
               variant="contained"
               style={{
-                backgroundColor: "RGB(189, 103, 103)",
+                backgroundColor: data.share_count
+                  ? "#2177b1"
+                  : "RGB(189, 103, 103)",
                 borderRadius: "15px",
                 height: "25px",
               }}
             >
-              Shared with 7 members
+              Shared with {data.share_count ? data.share_count : "All"} members
             </Button>
           </Grid>
           <Grid item xs={3}>
@@ -85,7 +91,7 @@ const Card = ({ data }) => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
-              style={{ border: "1px solid #166e60", color: "#166e60" }}
+              style={{ border: "1px solid RGB(45, 125, 165)", color: "RGB(45, 125, 165)" }}
             >
               Action
             </Button>
@@ -122,6 +128,8 @@ const Card = ({ data }) => {
         <Typography style={{ borderBottom: "1px dotted grey" }}>
           <DateRangeIcon />
           {dateConverter(data.updated).month} {dateConverter(data.updated).year}
+          {"     "} <LocationOnIcon />
+          {data.location}
         </Typography>
 
         <div style={{ paddingTop: "20px", borderBottom: "1px dotted grey" }}>
@@ -131,13 +139,24 @@ const Card = ({ data }) => {
                 {"<"} {data.mins_to_read}
               </i>
             )}
+            {data.collection_name && (
+              <Collection value={data.collection_name} />
+            )}
+            {data.collaborators.length > 0 && (
+              <Collabrator
+                collab={data.collaborators}
+                authorColor={data.author_color_mapping}
+              />
+            )}
             <div
               dangerouslySetInnerHTML={{ __html: data?.description }}
               style={{ maxHeight: "117px", overflow: "hidden" }}
             />
-            {data.images &&<Box style={{marginTop:"10px"}}>
-              <ImageList data={data.images}/>
-            </Box>}
+            {data.images && (
+              <Box style={{ marginTop: "10px" }}>
+                <ImageList data={data.images} />
+              </Box>
+            )}
           </Typography>
         </div>
         <Grid container style={{ borderBottom: "1px dotted grey" }}>
@@ -159,8 +178,8 @@ const Card = ({ data }) => {
           <Grid item xs={6} style={{ paddingTop: "8px", paddingBottom: "8px" }}>
             <Button
               style={{
-                border: " 1px solid #166e60",
-                color: "#166e60",
+                border: " 1px solid RGB(45, 125, 165)",
+                color: "RGB(45, 125, 165)",
                 marginLeft: "25px",
               }}
             >
@@ -170,8 +189,8 @@ const Card = ({ data }) => {
 
             <Button
               style={{
-                border: " 1px solid #166e60",
-                color: "#166e60",
+                border: " 1px solid RGB(45, 125, 165)",
+                color: "RGB(45, 125, 165)",
                 marginLeft: "10px",
               }}
             >
@@ -181,6 +200,13 @@ const Card = ({ data }) => {
             </Button>
           </Grid>
         </Grid>
+
+        {data.comments_count > 0 && (
+          <Box>
+            <Comments data={data.comments} />
+          </Box>
+        )}
+
         {data.is_comment_allowed ? (
           <Grid container style={{ paddingTop: "20px" }}>
             <Grid item xs={1}>
