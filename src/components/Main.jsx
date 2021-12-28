@@ -2,14 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Card from "./card/Card";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { sample } from "./api/api";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Main = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
 
-  console.log(data);
   const fetchMoreData = () => {
     const headers = {
       "Content-Type": "application/json",
@@ -71,17 +69,25 @@ const Main = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  },[]);
   return (
     <div>
       <InfiniteScroll
         dataLength={data.length}
         next={fetchMoreData}
         hasMore={true}
-        loader={<CircularProgress  color="inherit" style={{ position: "absolute",marginLeft:"50%" }} />}
+        loader={
+          <CircularProgress
+            color="inherit"
+            style={{
+              position: "absolute",
+              marginLeft: "50%",
+            }}
+          />
+        }
       >
-        {data.map((item) => {
-          return <Card data={item} />;
+        {data.map((item,index) => {
+          return <Card data={item} key={index}/>;
         })}
       </InfiniteScroll>
     </div>

@@ -6,7 +6,7 @@ export default function StandardImageList({ data }) {
 
   return (
     <Box>
-      {data.map((item) => {
+      {data.map((item,index) => {
         i++;
         if (i <= 3) {
           return (

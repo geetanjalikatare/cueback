@@ -3,37 +3,27 @@ import {
   Button,
   Grid,
   Paper,
-  TextareaAutosize,
   Typography,
+  Avatar,
 } from "@mui/material";
 import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import DateRangeIcon from "@mui/icons-material/DateRange";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import SendIcon from "@mui/icons-material/Send";
+import {
+  DateRange,
+  ContentCopy,
+  Attachment,
+  LocationOn,
+} from "@mui/icons-material";
 import Prompts from "../prompt/Prompts";
 import { dateConverter } from "../util/functions";
 import ImageList from "../image/ImageList";
-import Comments from "../comments/Comments";
+import Comments from "../comments/CommentList";
 import Collection from "../collection/Collection";
 import Collabrator from "../collaborator/Collabrator";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Like from "../like/Like";
+import CommentBox from "../comments/CommentBox";
+import Actions from "../actionMenu/Actions";
 
 const Card = ({ data }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  // console.log(data);
-
   return (
     <Box
       style={{
@@ -61,10 +51,10 @@ const Card = ({ data }) => {
               src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
             />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography>
               By{" "}
-              <a href="#">
+              <a href="##">
                 {data.user_details.field_first_name_value}{" "}
                 {data.user_details.field_last_name_value}
               </a>{" "}
@@ -84,35 +74,9 @@ const Card = ({ data }) => {
               Shared with {data.share_count ? data.share_count : "All"} members
             </Button>
           </Grid>
-          <Grid item xs={3}>
-            <Button
-              id="basic-button"
-              aria-controls="basic-menu"
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              style={{ border: "1px solid RGB(45, 125, 165)", color: "RGB(45, 125, 165)" }}
-            >
-              Action
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-              style={{ border: "1px solid green" }}
-            >
-              {Object.keys(data.actions_on_memory).map((i) => {
-                return (
-                  <MenuItem onClick={handleClose}>
-                    {data.actions_on_memory[i]}
-                  </MenuItem>
-                );
-              })}
-            </Menu>
+          <Grid item xs={2}>
+           <Actions data={data.actions_on_memory}
+           />
           </Grid>
         </Grid>
         <Typography
@@ -126,9 +90,9 @@ const Card = ({ data }) => {
           {data.title}
         </Typography>
         <Typography style={{ borderBottom: "1px dotted grey" }}>
-          <DateRangeIcon />
+          <DateRange />
           {dateConverter(data.updated).month} {dateConverter(data.updated).year}
-          {"     "} <LocationOnIcon />
+          {"     "} <LocationOn />
           {data.location}
         </Typography>
 
@@ -139,9 +103,11 @@ const Card = ({ data }) => {
                 {"<"} {data.mins_to_read}
               </i>
             )}
-            {data.collection_name && (
-              <Collection value={data.collection_name} />
-            )}
+            <Box>
+              {data.collection_name && (
+                <Collection value={data.collection_name} />
+              )}
+            </Box>
             {data.collaborators.length > 0 && (
               <Collabrator
                 collab={data.collaborators}
@@ -160,14 +126,17 @@ const Card = ({ data }) => {
           </Typography>
         </div>
         <Grid container style={{ borderBottom: "1px dotted grey" }}>
-          <Grid item xs={6}>
+          <Grid item xs={7}>
             <Typography>
-              {data.is_comment_allowed ? "Comments" : " "}
+              {data.is_comment_allowed
+                ? `${data.comments_count} Comments ${" "}`
+                : " "}
+              {data.like_comment_data.like_count && <a href="##"> Likes</a>}
             </Typography>
             {data.attachment_count > 0 && (
               <Typography style={{ color: "#36779a" }}>
-                <a href="#">
-                  <AttachmentIcon
+                <a href="##">
+                  <Attachment
                     style={{ transform: "rotate(150deg)", width: "25px" }}
                   />
                   {data.attachment_count}
@@ -175,18 +144,14 @@ const Card = ({ data }) => {
               </Typography>
             )}
           </Grid>
-          <Grid item xs={6} style={{ paddingTop: "8px", paddingBottom: "8px" }}>
-            <Button
-              style={{
-                border: " 1px solid RGB(45, 125, 165)",
-                color: "RGB(45, 125, 165)",
-                marginLeft: "25px",
-              }}
-            >
-              {" "}
-              <FavoriteBorderIcon /> Like
-            </Button>
-
+          <Grid item xs={5} style={{ paddingTop: "8px", paddingBottom: "8px" }}>
+            <Like
+              uid={data.user_details.uid}
+              nid={data.nid}
+              likeCount={data.like_comment_data.like_flag}
+              type="node"
+              attr_id="0"
+            />
             <Button
               style={{
                 border: " 1px solid RGB(45, 125, 165)",
@@ -195,18 +160,14 @@ const Card = ({ data }) => {
               }}
             >
               {" "}
-              <ContentCopyIcon />
+              <ContentCopy />
               Copy Link
             </Button>
           </Grid>
         </Grid>
-
-        {data.comments_count > 0 && (
-          <Box>
-            <Comments data={data.comments} />
-          </Box>
-        )}
-
+        <Box>
+          <Comments nid={data.nid} />
+        </Box>
         {data.is_comment_allowed ? (
           <Grid container style={{ paddingTop: "20px" }}>
             <Grid item xs={1}>
@@ -218,20 +179,7 @@ const Card = ({ data }) => {
             </Grid>
 
             <Grid item xs={11}>
-              <TextareaAutosize
-                min={4}
-                style={{ width: "620px", height: "100px", borderRadius: "8px" }}
-              />
-              <Button
-                style={{
-                  float: "right",
-                  backgroundColor: "RGB(238, 150, 163)",
-                }}
-                variant="contained"
-              >
-                {" "}
-                <SendIcon /> Post
-              </Button>
+              <CommentBox nid={data.nid} />
             </Grid>
           </Grid>
         ) : null}

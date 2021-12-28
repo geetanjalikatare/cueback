@@ -13,7 +13,7 @@ const Collabrator = ({ collab, authorColor }) => {
       >
         Hide Collabrator (1) ^
       </Button>
-      {collab.map((item) => {
+      {collab.map((item,index) => {
         return (
           <Grid container style={{ display: show % 2 === 0 ? "" : "none" }}>
             <Grid item>
