@@ -1,17 +1,18 @@
 import React from "react";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
+import { ArrowDropUp, ArrowDropDown } from "@mui/icons-material";
+import { useState } from "react";
 
-const Actions = ({data}) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  
+const Actions = ({ data }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+   
   };
-
   return (
     <Box>
       <Button
@@ -25,7 +26,7 @@ const Actions = ({data}) => {
           color: "RGB(45, 125, 165)",
         }}
       >
-        Action
+        Action {anchorEl ? <ArrowDropUp /> : <ArrowDropDown />}
       </Button>
       <Menu
         id="basic-menu"
@@ -35,11 +36,19 @@ const Actions = ({data}) => {
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
-        style={{ border: "1px solid green" }}
+        style={{ border: "1px solid #2d7da5" }}
       >
-        {Object.keys(data).map((i,index) => {
+        {Object.keys(data).map((i, index) => {
           return (
-            <MenuItem onClick={handleClose} key={index}>
+            <MenuItem
+              onClick={handleClose}
+              
+              key={index}
+              style={{
+                borderBottom: "1px solid #2d7da5",
+               
+              }}
+            >
               {data[i]}
             </MenuItem>
           );

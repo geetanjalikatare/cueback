@@ -2,38 +2,26 @@ import * as React from "react";
 import { Box } from "@mui/material";
 
 export default function StandardImageList({ data }) {
-  var i = 0;
-
+  var width="";
+  
+  if(data.length===1) width="97%";
+  else if(data.length ===2) width="45%"
+  else width = "30%"
   return (
     <Box>
-      {data.map((item,index) => {
-        i++;
-        if (i <= 3) {
+      {data.map((item, index) => {
+        if (index + 1 <= 3) {
           return (
-            <>
-              <img
-                src={item.url}
-                alt={item.file_title}
-                style={{
-                  height: "170px",
-                  width: "200px",
-                  borderRadius: "10px",
-                  margin: "10px",
-                }}
-              ></img>
-              {data.length > 3 && i === 3 && (
-                <p
-                  style={{
-                    position: "absolute",
-                    marginLeft: "100px",
-                    color: "white",
-                    fontSize: "30px",
-                  }}
-                >
-                  more
-                </p>
-              )}
-            </>
+            <img
+              src={item.url}
+              alt={item.file_title}
+              style={{
+                height: "250px",
+                width: width,
+                borderRadius: "10px",
+                marginLeft:"10px"
+              }}
+            ></img>
           );
         }
       })}

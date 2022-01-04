@@ -26,10 +26,10 @@ const Like = ({ uid, nid, likeCount, attr_id, type }) => {
         headers: headers,
       })
       .then((res) => {
-        console.log("like", res);
+    
       })
       .catch((err) => {
-        console.log("error", err);
+       
       });
   };
   const handleUnLike = () => {
@@ -39,7 +39,6 @@ const Like = ({ uid, nid, likeCount, attr_id, type }) => {
       })
       .then((res) => {})
       .catch((err) => {
-        console.log("error", err);
       });
   };
   const handleClick = (e) => {
@@ -52,7 +51,6 @@ const Like = ({ uid, nid, likeCount, attr_id, type }) => {
       style={{
         border: type === "comment" ? " " : "1px solid RGB(45, 125, 165)",
         color: "RGB(45, 125, 165)",
-        marginLeft: "25px",
       }}
       onClick={(e) => {
         setClick(click + 1);

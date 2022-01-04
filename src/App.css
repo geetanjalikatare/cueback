@@ -1,7 +1,7 @@
-.App {
-  text-align: center;
-}
 
+body{
+  background-color: "#e6f3f4";
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -11,6 +11,9 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+input:focus {
+  border: 3px solid white;
 }
 
 .App-header {

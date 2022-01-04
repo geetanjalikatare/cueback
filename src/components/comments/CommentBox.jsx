@@ -23,29 +23,30 @@ const CommentBox = ({ nid }) => {
     e.preventDefault();
     dispatch(commentCounter());
     axios
-      .post("https://public.cuebackqa.com/api/actions/comment", obj, {
+      .post("https://cuebackqa.com/api/actions/comment", obj, {
         headers: headers,
       })
       .then((res) => {
         setData("");
       })
       .catch((err) => {
-        console.log(err);
       });
   };
   return (
     <Box>
       <TextareaAutosize
         min={4}
-        style={{ width: "620px", height: "100px", borderRadius: "8px" }}
+        style={{ width: "628px", height: "118px", borderRadius: "6px" ,border:"1px solid lightgrey"}}
         value={data}
         onChange={(e) => {
           setData(e.target.value);
         }}
+        placeholder="Your Comment..."
       />
       <Button
         style={{
           float: "right",
+          
           backgroundColor: "RGB(238, 150, 163)",
         }}
         variant="contained"
@@ -54,7 +55,7 @@ const CommentBox = ({ nid }) => {
         }}
       >
         {" "}
-        <SendIcon /> Post
+        <SendIcon />{" "} Post
       </Button>
     </Box>
   );

@@ -8,7 +8,7 @@ const Comment = ({ commentData }) => {
   return (
     <Box
       style={{
-        borderBottom: "1px solid lightgrey",
+        
         padding: "8px 0px 8px 0px",
       }}
     >
@@ -20,7 +20,7 @@ const Comment = ({ commentData }) => {
             src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
           />
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={9} style={{borderBottom: "1px solid lightgrey"}}>
           <h5
             style={{
               color: "#2d7da5",
@@ -46,7 +46,7 @@ const Comment = ({ commentData }) => {
           <p>{unescape(commentData.comment_body_value)}</p>
           <p>{commentData.like_comment_data.like_count>0 && <a href="##">{" "}Likes</a>}</p>
         </Grid>
-        <Grid item xs={2} style={{ color: "#2d7da5", marginTop: "45px" }}>
+        <Grid item xs={2} style={{ color: "#2d7da5", marginTop: "45px",paddingLeft:"40px",borderBottom: "1px solid lightgrey" }}>
           <Like
             type="comment"
             likeCount={commentData.like_comment_data.like_flag}

@@ -1,5 +1,6 @@
 import React, { useState }  from "react";
 import { Box, Button } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
 
 const Prompt = ({value}) =>{
     const [hover,setHover] =useState(false);
@@ -11,17 +12,17 @@ const Prompt = ({value}) =>{
                 borderRadius: "10px",
                 alignItems: "center",
                 border: "1px solid #2d7ca7",
-                height: "175px",
+                height: "163px",
                 backgroundColor: hover?"white":"#2d7ca7",
-                width: "500px",
-                paddingTop: "20px",
+                width: "535px",
                 textAlign: "center",
-                "&:hover":{
-                    backgroundColor:"white"
-                }
+                
               }}
             >
-              <h5 style={{ color: hover?"black":"white" ,paddingBottom:"35px"}}>
+              <Button style={{float:"right"}}>
+                <ClearIcon style={{color:hover?"red":"white"}}/>
+              </Button>
+              <h5 style={{ color: hover?"black":"white" ,paddingBottom:"35px",paddingTop: "20px",marginLeft:"49px"}}>
                 {value.title}
               </h5>
               <Button

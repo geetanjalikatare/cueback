@@ -5,7 +5,7 @@ const Collection = ({ value }) => {
   return (
     <Button
       variant="contained"
-      style={{ backgroundColor: "RGB(168, 186, 219)", borderRadius: "20px" }}
+      style={{ backgroundColor: "RGB(168, 186, 219)", borderRadius: "20px",paddingBottom: "20px" }}
     >
       <span style={{ color: "white", fontSize: "14px", fontWeight: "bolder" }}>
         In Collection{" "}

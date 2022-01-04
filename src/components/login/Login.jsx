@@ -6,7 +6,7 @@ import { LoginApi } from "../api/api";
 
 const Login = () => {
   const [email, setEmail] = useState("kiran.pyati@infobeans.com");
-  const [password, setPassword] = useState("puneserver.123");
+  const [password, setPassword] = useState("Login@123#@!");
 
   const obj = {
     emailId: email,

@@ -1,9 +1,10 @@
 import React from "react";
 import Prompt from "./Prompt";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-const Prompts = ({data}) => {
-
- var count=0;
+const Prompts = ({ data }) => {
+  var count = 0;
   return (
     <div
       id="carouselExampleControls"
@@ -13,17 +14,23 @@ const Prompts = ({data}) => {
         border: "1px solid green",
         borderRadius: "10px",
         backgroundColor: "#70a887",
-        height: "200px",
-        width: "650px",
-        padding: "10px 60px 10px 75px",
+        height: "183px",
+        width: "687px",
+        padding: "10px 50px 10px 75px",
       }}
     >
       <div class="carousel-inner">
-        {Object.keys(data).map((i,index)=>{
+        {Object.keys(data).map((i, index) => {
           count++;
-          return ( <div className={count===1?"carousel-item active":"carousel-item "}>
-          <Prompt value={data[i]}/>
-         </div>)
+          return (
+            <div
+              className={
+                count === 1 ? "carousel-item active" : "carousel-item "
+              }
+            >
+              <Prompt value={data[i]} />
+            </div>
+          );
         })}
       </div>
       <button
@@ -32,8 +39,14 @@ const Prompts = ({data}) => {
         data-bs-target="#carouselExampleControls"
         data-bs-slide="prev"
       >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+        <div style={{
+            borderRadius: "25px",
+            color: "#2d7ca7",
+            padding:"5px",
+            backgroundColor:"white"
+          }}>
+        <span  aria-hidden="true"> <ArrowBackIosNewIcon/></span>
+        <span class="visually-hidden">Previous</span></div>
       </button>
       <button
         class="carousel-control-next"
@@ -41,8 +54,17 @@ const Prompts = ({data}) => {
         data-bs-target="#carouselExampleControls"
         data-bs-slide="next"
       >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
+        <div
+          style={{
+            borderRadius: "25px",
+            color: "#2d7ca7",
+            padding:"5px",
+            backgroundColor:"white"
+          }}
+        >
+          <span aria-hidden="true"><ArrowForwardIosIcon /></span>
+          <span class="visually-hidden">Next</span>
+        </div>
       </button>
     </div>
   );

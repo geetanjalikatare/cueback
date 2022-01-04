@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const Collabrator = ({ collab, authorColor }) => {
   const [show, setShow] = useState(0);
   return (
-    <Box>
+    <Box style={{ paddingBottom: "20px" }}>
       <Button
         onClick={() => {
           setShow(show + 1);

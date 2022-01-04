@@ -28,7 +28,7 @@ const Comments = ({nid})=>{
           })
           .then((res) => {
               setData(res.data.commentList.comments)})
-          .catch((err)=>{console.log(err)})
+          .catch((err)=>{})
       }, [count,nid]);
     
     return(
